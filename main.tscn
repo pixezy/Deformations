@@ -1,0 +1,109 @@
+[gd_scene load_steps=27 format=3 uid="uid://dgjb35y22lrrn"]
+
+[ext_resource type="Shader" path="res://shaders/sine_waves.gdshader" id="1_ajnnq"]
+[ext_resource type="Shader" path="res://shaders/sine_cosine.gdshader" id="2_beqna"]
+[ext_resource type="Texture2D" uid="uid://bdb4ygxbr4jqf" path="res://textures/water.jpg" id="3_lffin"]
+[ext_resource type="Shader" path="res://shaders/texture_distortion.gdshader" id="4_bwjdu"]
+[ext_resource type="Shader" path="res://shaders/shockwave.gdshader" id="4_ufvp3"]
+[ext_resource type="Shader" path="res://shaders/warp.gdshader" id="5_8osrn"]
+[ext_resource type="Texture2D" uid="uid://wt20mgeql0hm" path="res://textures/uv_offset2.png" id="5_ys8yf"]
+[ext_resource type="Texture2D" uid="uid://5eu4ti80ehkt" path="res://textures/skin.jpg" id="6_8u0wx"]
+[ext_resource type="Shader" path="res://shaders/spherify.gdshader" id="6_b4xwp"]
+[ext_resource type="Texture2D" uid="uid://cwflnjvn3ic14" path="res://icon.svg" id="7_kpscb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kwjra"]
+render_priority = 0
+shader = ExtResource("1_ajnnq")
+shader_parameter/defstrength = 0.121
+shader_parameter/deffreq = 1.583
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1resm"]
+material = SubResource("ShaderMaterial_kwjra")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j4kua"]
+render_priority = 0
+shader = ExtResource("2_beqna")
+shader_parameter/distortion = 0.028
+shader_parameter/time_scale = Vector2(1, 2)
+shader_parameter/albedo = ExtResource("3_lffin")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_3a32k"]
+material = SubResource("ShaderMaterial_j4kua")
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_nxt2u"]
+load_path = "res://.godot/imported/water.jpg-746c7f920cd8ffe5d68b766f3ecbdd37.s3tc.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0460s"]
+render_priority = 0
+shader = ExtResource("4_bwjdu")
+shader_parameter/distortion = Vector2(0.015, 0.024)
+shader_parameter/albedo = SubResource("CompressedTexture2D_nxt2u")
+shader_parameter/distortion_map = ExtResource("5_ys8yf")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_kem0c"]
+material = SubResource("ShaderMaterial_0460s")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lb41k"]
+render_priority = 0
+shader = ExtResource("6_b4xwp")
+shader_parameter/warp_borders = null
+shader_parameter/icon_tex = ExtResource("7_kpscb")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ycnh2"]
+material = SubResource("ShaderMaterial_lb41k")
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_lkrio"]
+load_path = "res://.godot/imported/water.jpg-746c7f920cd8ffe5d68b766f3ecbdd37.s3tc.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ci4yl"]
+render_priority = 0
+shader = ExtResource("4_ufvp3")
+shader_parameter/center = null
+shader_parameter/force = 0.066
+shader_parameter/mask_thickness = 0.225
+shader_parameter/albedo = SubResource("CompressedTexture2D_lkrio")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_xwggc"]
+material = SubResource("ShaderMaterial_ci4yl")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rjix8"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_h1htu"]
+noise = SubResource("FastNoiseLite_rjix8")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xpem2"]
+render_priority = 0
+shader = ExtResource("5_8osrn")
+shader_parameter/warp_strength = 0.025
+shader_parameter/warp_speed = 1.432
+shader_parameter/warp_scale = 0.61
+shader_parameter/albedo = ExtResource("6_8u0wx")
+shader_parameter/noise = SubResource("NoiseTexture2D_h1htu")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_o66hx"]
+material = SubResource("ShaderMaterial_xpem2")
+
+[node name="Node3D" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_1resm")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+mesh = SubResource("PlaneMesh_3a32k")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+mesh = SubResource("PlaneMesh_kem0c")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 2)
+mesh = SubResource("PlaneMesh_ycnh2")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+mesh = SubResource("PlaneMesh_xwggc")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+mesh = SubResource("PlaneMesh_o66hx")
